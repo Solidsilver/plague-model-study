@@ -17,11 +17,11 @@
 	\vspace*{0.5cm}
 
 	\huge\bfseries
-	Examining a new Rat-Flea model for transmission of the Bubonic Plague
+	Data-driven Comparison of Plague Models
 	
 	\vspace*{0.5cm}
 
-	\large Ian Lynch | Luke Mattfeld
+	\large Luke Mattfeld
 
 	\vspace*{\fill}
 	\end{titlepage}
@@ -34,12 +34,13 @@
 \section {Abstract}
 
 here is where one writes the abstract. An abstract abstract is the best kind of abstract
+
 \pagebreak
 
 \section {Introduction}
 
-The Plague has devastated populations and greatly affected human history in it’s 3 major outbreaks. These outbreaks include the Justinian Plague, the Bubonic Plague, and the more recent outbreak in the 1800’s in China. [citation needed]
-This plague is caused by the bacteria Yersinia Pestis and has 3 primary infection types: Bubonic, Pneumonic, and Septicaemic
+The Plague has devastated populations and greatly affected human history in its 3 major outbreaks. These outbreaks include the Justinian Plague, the Bubonic Plague, and the more recent outbreak in the 1800’s in China. [citation needed]
+The driving force of the plague is the bacteria Yersinia Pestis, which manifests in 3 primary infection types: bubonic, pneumonic, and septicaemic
 
 Bubonic plague, the most well-known, manifests in painful, swollen “Buboes” at or near the lymph nodes. It is spread through contact with the skin, in most cases insect bites. The mortality rate for untreated bubonic plague is 40-70\% \cite{ditchburn_hodgkins_2019} . Pneumonic plague, also fairly deadly, is spread through aspirated bacteria, and starts in the lungs. It is spread through aspiration in the presence of infected individuals or in an environment laiden with the bacteria. The mortality rate for untreated pneumonic plague is ~90-95\% Finally, there is a septicaemic plague which is the most deadly. Incubation for septicaemic is veryfast, and spreads fast throughout the body. Some reports said infected individuals would feel fine in the morning and be dead by evening. This had little effect on the overall epidemic when compared to the Bubonic and Pneumonic plagues, only accounting for 10-15\% of all cases of the plague since people would tend to die before they had time to develop other symptoms or methods of spreading. For this reason, the septicaemic plague will not be used in this research. The mortality rate for untreated septicaemic plague is 100\% \cite{ditchburn_hodgkins_2019}.
 
@@ -49,7 +50,7 @@ Specifically when examining the second outbreak, the poor hygienic conditions in
 The exact role of the pneumonic plague is somewhat unknown. It does, under certain conditions, form from an existing case of bubonic plague, and is then spread as pneumonic from that point on. Some records of death rates are in areas and at rates which would be explained better by the spread of this pneumonic type. However, the lack of medical knowledge at the time fails us here.
 This theory is partially supported by historical evidence - as sightings of sick rats were observed, and were thought to bring “bad air” which was the source of new infection. In addition ships began to be refused at many ports in Europe due to the infection they carried via the rats and sailors. [citation needed]
 
-However a 2018 paper studying the mathematical models underlying this type of disease spread seems to show this may not be correct. The paper investigates fitting the model of the prevailing rat-flea theory and a purely pneumonic model to a new model that looks at the interaction of human fleas and lice to the historical death rates. The conclusion was that, given the evidence, the new model better predicted the death curve over the course of the 2nd wave of the disease \cite{Dean1304} .
+However Dean et. al. in a recent modeling study suggest otherwise \cite{Dean1304}. In this paper, Dean et al. investigates several mechanisms of spread likely to be responsible for historic plague events. They accomplished this by fitting the various differential models of plague spread (Rat-flea, pneumonic, and  a new human-ectoparasite model) to historical death rates. Their results suggested that the new Human-ectoparasite model better predicted the death curve over the course of the 2nd wave of the disease.
 
 %\pagebreak
 %
@@ -59,12 +60,24 @@ However a 2018 paper studying the mathematical models underlying this type of di
 \pagebreak
 
 \section {Preliminary Models}
-The 2018 paper this work is based on, Human ectoparasites and the spread of plague in
-Europe during the Second Pandemic \cite{Dean1304}, set out to compare 3 models of
-transmission: 2 for bubonic and 1 for pneumonic plague. These models, taken directly from their work, are as such:
+This paper's seminal work by Dean et.\ al. \cite{Dean1304} set out to compare 3 models of
+transmission: 2 for bubonic and 1 for pneumonic plague. The rat-flea model used was obtained from two papers by Keeling and Gilligan \cite{keeling_gilligan_zoonosis} \cite{keeling2000}, and going forward will be referred to as the Keeling-Gilligan model. While in the Dean work the Keeling-Gilligan rat-flea model did not perform as well as the Human-ecto model, a new rat-flea model has recently been proposed. This model developed by Oster and Lynch [citation needed], hereafter known as the Lynch-Oster model, takes a different model structure to that of Keeling and Gilligan. These models, taken from their respective papers, are as such:
 
-\subsection {Rat-Flea Model}
-Rat-flea-human transmission, modeled with ten differential equations.
+\subsection {Pneumonic Model}
+Direct human-to-human transmission, modeled with three differential equations.
+
+\begin{equation}
+	\begin{align*}
+		\frac{dS_h}{dt} &= - \beta_p \frac{S_h I_h}{N_h} \\
+		\frac{dI_h}{dt} &= \beta_p \frac{S_h I_h}{N_h} - \gamma_p I_h \\
+		\frac{dD_h}{dt} &= \gamma_p I_h
+	\end{align*}
+\end{equation}
+
+This is a SID model for human population. Since so few recovered from the pneumonic plague, it does not warrant the complexity of another equation.
+
+\subsection {Keeling-Gillian Rat Model}
+This model of rat-flea-human transmission is modeled with ten differential equations.
 
 \begin{equation}
 	\begin{align*}
@@ -83,7 +96,7 @@ Rat-flea-human transmission, modeled with ten differential equations.
 
 These equations follow a SIRD model for rats and humans:
 
-S - Suceptable,
+S - Susceptible,
 I - Infected,
 R - recovered,
 D - dead.
@@ -92,18 +105,43 @@ In this case, the total of population i is T_i = S_i + I_i + R_i.
 
 Given that fleas live on the rats, they are modeled as an average number of fleas per rat H, and the number of infections fleas not on rats F.
 
-\subsection {Pneumonic Model}
-Direct human-to-human transmission, modeled with three differential equations.
+\subsection{Lynch-Oster Rat Model}
 
-\begin{equation}
-	\begin{align*}
-		\frac{dS_h}{dt} &= - \beta_p \frac{S_h I_h}{N_h} \\
-		\frac{dI_h}{dt} &= \beta_p \frac{S_h I_h}{N_h} - \gamma_p I_h \\
-		\frac{dD_h}{dt} &= \gamma_p I_h
-	\end{align*}
-\end{equation}
+\begin{align}
+	\frac{dR_T}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R_T)-\delta R_c \\
+	\frac{dR}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R)-\alpha \frac{F_c}{F_T}R+\gamma  R_c \\
+	\frac{dR_c}{dt} &= \alpha \frac{F_c}{F_T} (R_T-R_c)-\frac{\beta_R}{K_R}(R_T)(R_c) - \delta R_c - \gamma R_c 
+\end{align}
 
-This is a SID model for human population. Since so few recovered from the pneumonic plague, it does not warrant the complexity of another equation.
+
+\begin{align}
+	\frac{dF_T}{dt} &= (\frac{\beta_F}{K_F})F_T(K_F-F_T)-\rho F_T  \\
+	\frac{dF_c}{dt} &= \lambda \frac{R_c}{R_T} (F_T-F_c) - \rho F_c 
+\end{align}
+
+Words, words, words...
+
+
+
+The human dynamics follow an SEIR model where the inflow to the infected state depends on the
+population density of the contaminated fleas and an interaction term for the two populations.
+
+\begin{align}
+	\frac{dS}{dt} &= \beta (S+R_b) - \sigma S \frac{F_c}{F_T} - \mu S \\
+	\frac{dE}{dt} &= \sigma S \frac{F_c}{F_T} - \nu E - \mu E \\
+	\frac{dI}{dt} &= \nu E - \phi I - rI \\
+	\frac{dR_b}{dt} &= rI - \mu R_b
+\end{align}
+
+Words, words, words...
+
+
+
+In this model, when looking at every part of the model, there are going to be certain parameters
+that will be fixed, such as the carrying capacity of fleas in relation to the population of the rats.
+Other fixed parameters are the parameters for the birth rate of humans, the intrinsic death rate of
+people, the birth and death rates of rats and fleas, the carrying capacity of the rats, incubation period
+in humans, death rate, and the recovery rate in both humans and rats.
 
 \subsection {Human-Ectoparasite Model}
 Human-parasite transmission, modeled with seven differential equations.
@@ -125,9 +163,11 @@ The ectoparasites are modeled with S - the susceptible population, and I - the i
 
 \pagebreak
 
-Table of Parameters
+\subsection{Parameters}
 
-\begin{table}[hbt]
+\subsubsection{Table of Parameters for existing models}
+
+\begin{table}[]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|l|}
 \hline
@@ -161,215 +201,7 @@ $g_h$ & 0.4 & Probability of recovery from bubonic plague \\ \hline
 \caption{U indicates the range of a uniformly distributed variable. (d) indicates days}
 \end{table}
 
-
-
-The known parameters were gathered from historical data, inference of other variables, and the result of some formula. For a full derivation, see the article by Dean et. al. \cite[p.~3-4]{Dean1304}
-For the unknown parameters, Markov Chain Monte Carlo simulations are run to estimate based on data. We have set up the same process, and will examine the same datasets. For death rates in Barcelona, here are the three models fitted respectively:
-
-\begin{figure}[h!]
-	\begin{subfigure}{1\textwidth}
-		\includegraphics[width=\linewidth]{Figures/models1.png}
-	\end{subfigure}\hspace{\fill}
-	\caption{The black data points are recorded deaths pre day in the given data set. As is visible, the human-ecto model does get the closest to fitting the given data} 
-\end{figure}
-
-\pagebreak
-
-\section {An Additional Model}
-
-Yet, throwing out the rat-flea combo seems to be somewhat amis, as there is historical evidence for it. Thus, in an attempt to revive the legacy of the rats, we provide a new model which may prove to be yet more effective at modeling the plague in the second wave.
-
-*Begining of Ian's work
-
-\subsection {Pneumonic Plague}
-
-Following these simplified changes in
-populations, the system of equations would be as follows:
-\begin{align} 
-	\frac{dS}{dt}  &=  -\alpha SI \\ 
-	\frac{dE}{dt}  &=  \alpha SI - \sigma E \\
-	\frac{dI}{dt}  &=  \sigma E - \nu I - rI \\
-	\frac{dR}{dt} &= rI
-\end{align}
-
-Here Ian has a figure, however eps files should be used (not jpg nor png flies).
-\begin{figure}[h!]
-	\begin{subfigure}{0.48\textwidth}
-		\includegraphics[width=\linewidth]{Figures/short_pneumonic.jpg}
-	\end{subfigure}\hspace{\fill}
-	\begin{subfigure}{0.48\textwidth}
-		\includegraphics[width=\linewidth]{Figures/short_pneumonic2.jpg}
-	\end{subfigure}
-	\caption{Pre-treatment susceptible and infected population. $\alpha=2*10^{-5}, \sigma=0.33, \nu=0.75, r=0$.
-	The rise and decrease of pneumonic plague victims pre-treatment, leading to a disease free state. The susceptible
-	population is plotted against the infected population showing the relationship between the two populations.} 
-\end{figure}
-
-From the results 
-\pagebreak
-
-\subsubsection{special case}
-
-Examination of this case...
-
-
-\pagebreak
-
-\subsubsection{a different case}
-Examination of this case...
-
-\pagebreak
-
-\subsection {Bubonic Plague}
-
-Words, words...
-
-
-
-\subsubsection {Rat and Flea Dynamics}
-Words, words, words...
-
-
-\begin{align}
-	\frac{dR_c}{dt} &= \alpha \frac{F_c}{F_T} (R_T-R_c)  - \gamma R_c \\
-	\frac{dF_c}{dt} &= \lambda \frac{R_c}{R_T} (F_T-F_c) - \rho F_c 
-\end{align}
-Words, words, words...
-
-
-This results in a system of the following:
-
-\begin{align}
-	\frac{dr}{d\tau} &= Af(1-r)-rG \\
-	\frac{df}{d\tau} &= Yr(1-f)-f
-\end{align}
-
-Where $A=\frac{\alpha}{\rho}, G=\frac{\gamma}{\rho},
-Y=\frac{\lambda}{\rho}$.
-The next steps are to find the nullclines of the system and then determine the equilibria, which are
-(0, 0) and [$\frac{AY-G}{Y(A+G)}, \frac{AY-G}{A(1+Y)}$]. The nullclines can be found by setting
-$\frac{dr}{dt}$ equal to zero and $\frac{df}{dt}$ equal to zero as well and solving for either r or f,
-in this case solve for f as this is the flea population.
-
-\begin{align}
-	f &= \frac{rG}{A(1-r)} \\
-	f &= \frac{rY}{rY+1}
-\end{align}
-
-\begin{figure}[h!]
-	\begin{subfigure}{0.48\linewidth}
-	\includegraphics[width=\linewidth]{Figures/Nullcline.png}
-	\end{subfigure}
-	\begin{subfigure}{0.48\linewidth}
-	\includegraphics[width=\linewidth]{Figures/nullcline2.png}
-	\end{subfigure}
-	\caption{Nullclines of the system of rat and flea dynamics and trajectories in phase space.}
-\end{figure}
-
-Now comes determining the Jacobian,
-a matrix comprised of the partial derivative of each compartment with respect to one variable.
-In this case, the Jacobian matrix is given by 
-\begin{equation}
-J(r, f)=
-\begin{bmatrix}
--Af-G & A-Ar \\
-Y-Yf & -Yr-1
-\end{bmatrix}
-\end{equation}
-
-To study the stability of the equilibria, we need to plug in the equilibrium points
-into the matrix for their respective variables. When r*=0 and f*=0, the resultant trace
-of the Jacobian is going to be $-G-1$, which will always be a negative number seeing as G is a positive number. 
-With the trace of the Jacobian being less then zero, there are two
-possibilities for the stability of this equilibrium, which will depend on the determinant, being either an
-asymptotically stable node or an asymptotically unstable spiral. Studying the determinant of the matrix
-under the specified r* and f*, the determinant will be $G-AY$. This means that the stability of the point
-will change, if $G<AY$, then the determinant will be negative which results in the point being an unstable
-spiral. If $G>AY$, then the determinant will be positive which results in a stable node. When 
-r*=$\frac{AY-G}{Y(A+G)}$ and f*=$\frac{AY-G}{A(1+Y)}$ the computations become more
-complicated as the computation is algebraically heavy. The Jacobian matrix that results
-from these specific values of f and r is
-\begin{equation}
-J(r*, f*)=
-\begin{bmatrix}
--\frac{AY-G}{A+G}-G & A-\frac{A^{2}Y-AG}{Y(A+G)} \\
-Y-\frac{AY^{2}-GY}{A(1+Y)} & -\frac{AY-G}{A+G}-1 \\
-\end{bmatrix}
-\end{equation}
-The resulting trace of the Jacobian matrix is $-2(\frac{AY-G}{A+G})-G-1$ which is only positive
-provided $2G-2AY>A+G+AG+G^{2}$. Otherwise, the trace is going to be negative. The determinant
-of the Jacobian matrix is $$(\frac{AY-G}{A+G})^{2} + (G+1)\frac{AY-G}{A+G}+G-AY+\frac{AY^{2}-GY}{1+Y} + \frac{A^{2}Y-AG}{A+G}-(\frac{A^{2}Y-AG}{Y(A+G)}\frac{AY^{2}-GY}{A(1+Y)})$$
-With this determinant and trace, the equilibrium is uncertain as it could be stable or unstable, node or spiral
-depending on the parameter estimates of the terms. From examining the history of the disease,
-we can assume that the r* and f* equilibrium is being met seeing that the rat and flea
-populations continue to spread plague through different areas of the world.
-
-\pagebreak
-
-\subsubsection{Plague Dynamics Coupled with Rat and Flea Dynamics}
-
-Words...
-
-\begin{align}
-	\frac{dR_T}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R_T)-\delta R_c \\
-	\frac{dR}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R)-\alpha \frac{F_c}{F_T}R+\gamma  R_c \\
-	\frac{dR_c}{dt} &= \alpha \frac{F_c}{F_T} (R_T-R_c)-\frac{\beta_R}{K_R}(R_T)(R_c) - \delta R_c - \gamma R_c 
-\end{align}
-Words, words, words...
-
-
-\begin{align}
-	\frac{dF_T}{dt} &= (\frac{\beta_F}{K_F})F_T(K_F-F_T)-\rho F_T  \\
-	\frac{dF_c}{dt} &= \lambda \frac{R_c}{R_T} (F_T-F_c) - \rho F_c 
-\end{align}
-
-Words, words, words...
-
-
-
-The human dynamics follow an SEIR model where the inflow to the infected state depends on the
-population density of the contaminated fleas and an interaction term for the two populations.
-
-\begin{align}
-	\frac{dS}{dt} &= \beta (S+R_b) - \sigma S \frac{F_c}{F_T} - \mu S \\
-	\frac{dE}{dt} &= \sigma S \frac{F_c}{F_T} - \nu E - \mu E \\
-	\frac{dI}{dt} &= \nu E - \phi I - rI \\
-	\frac{dR_b}{dt} &= rI - \mu R_b
-\end{align}
-
-Words, words, words...
-
-
-
-In this model, when looking at every part of the model, there are going to be certain parameters
-that will be fixed, such as the carrying capacity of fleas in relation to the population of the rats.
-Other fixed parameters are the parameters for the birth rate of humans, the intrinsic death rate of
-people, the birth and death rates of rats and fleas, the carrying capacity of the rats, incubation period
-in humans, death rate, and the recovery rate in both humans and rats.
-
-\begin{figure}[h!]
-	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/bubonic750.jpg}
-	\end{subfigure}\hspace{\fill}
-	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/bubonicr.jpg}
-	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/bubonicrat.jpg}
-	\end{subfigure}\hspace{\fill}
-	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/Bubonicrf.jpg}
-	\end{subfigure}
-	\caption{Human, rat, and flea populations under the bubonic model. The parameters are $\alpha=0.25, \delta=1/300, \gamma=0.1, \lambda=0.2, \rho=1/40, \sigma=1.5*10^{-3}, \nu=1/6, \phi=1/6, r=1/10.$}
-\end{figure}
-
-Words, words, words...
-
-
-
-\newpage
-
-Table of Parameters for the new model
+\subsubsection{Table of Parameters for the Lynch-Oster model}
 
 \begin{table}[]
 \resizebox{\textwidth}{!}{%
@@ -397,13 +229,51 @@ $r^{-1}$ & (d) & Rate of recovery from bubonic plague \\ \hline
 \caption{U indicates the range of a uniformly distributed variable. (d) indicates days}
 \end{table}
 
+\pagebreak
+
+\section{Method: Markov-Chain Monte-Carlo (MCMC)}
+
+The method we will use to compare the effectiveness of these models against real-world data is Markov-Chain Monte-Carlo (MCMC). MCMC is a method of fitting unknown parameters in stochastic models to data which follows these models.
+
+The steps for MCMC are as such:
+
+
+
+
+\newpage
+
 
 
 \newpage
 
 \section {Comparison}
 
-*here we compare the previous models to the new fitted model
+The known parameters were gathered from historical data, inference of other variables, and the result of some formula. For a full derivation, see the article by Dean et. al. \cite{Dean1304}
+For the unknown parameters, Markov Chain Monte Carlo simulations are run to estimate based on data. We have set up the same process, and will examine the same datasets. For death rates in Barcelona, here are the three models fitted respectively:
+
+\begin{figure}[h!]
+	\begin{subfigure}{1\textwidth}
+		\includegraphics[width=\linewidth]{Figures/models1.png}
+	\end{subfigure}\hspace{\fill}
+	\caption{The black data points are recorded deaths pre day in the given data set. As is visible, the human-ecto model does get the closest to fitting the given data} 
+\end{figure}
+
+Here for example for above
+\begin{figure}[h!]
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{Figures/bubonic750.jpg}
+	\end{subfigure}\hspace{\fill}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{Figures/bubonicr.jpg}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{Figures/bubonicrat.jpg}
+	\end{subfigure}\hspace{\fill}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{Figures/Bubonicrf.jpg}
+	\end{subfigure}
+	\caption{Human, rat, and flea populations under the bubonic model. The parameters are $\alpha=0.25, \delta=1/300, \gamma=0.1, \lambda=0.2, \rho=1/40, \sigma=1.5*10^{-3}, \nu=1/6, \phi=1/6, r=1/10.$}
+\end{figure}
 
 \newpage
 
