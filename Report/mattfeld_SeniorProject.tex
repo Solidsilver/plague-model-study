@@ -7,6 +7,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{cite}
+\usepackage{float}
+
+\graphicspath{{../Figures/}}
 
 \begin{document}
 
@@ -76,7 +79,7 @@ Direct human-to-human transmission, modeled with three differential equations.
 
 This is a SID model for human population. Since so few recovered from the pneumonic plague, it does not warrant the complexity of another equation.
 
-\subsection {Keeling-Gillian Rat Model}
+\subsection {Keeling-Gilligan Rat Model}
 This model of rat-flea-human transmission is modeled with ten differential equations.
 
 \begin{equation}
@@ -101,26 +104,23 @@ I - Infected,
 R - recovered,
 D - dead.
 
-In this case, the total of population i is T_i = S_i + I_i + R_i.
+In this case, the total of population i is $T_i = S_i + I_i + R_i$.
 
 Given that fleas live on the rats, they are modeled as an average number of fleas per rat H, and the number of infections fleas not on rats F.
 
 \subsection{Lynch-Oster Rat Model}
 
-\begin{align}
-	\frac{dR_T}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R_T)-\delta R_c \\
-	\frac{dR}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R)-\alpha \frac{F_c}{F_T}R+\gamma  R_c \\
-	\frac{dR_c}{dt} &= \alpha \frac{F_c}{F_T} (R_T-R_c)-\frac{\beta_R}{K_R}(R_T)(R_c) - \delta R_c - \gamma R_c 
-\end{align}
+These equations govern the dynamics of the rats and fleas in 3 models each:
 
-
-\begin{align}
-	\frac{dF_T}{dt} &= (\frac{\beta_F}{K_F})F_T(K_F-F_T)-\rho F_T  \\
-	\frac{dF_c}{dt} &= \lambda \frac{R_c}{R_T} (F_T-F_c) - \rho F_c 
-\end{align}
-
-Words, words, words...
-
+\begin{equation}
+	\begin{align*}
+		\frac{dR_T}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R_T)-\delta R_c \\
+		\frac{dR}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R)-\alpha \frac{F_c}{F_T}R+\gamma  R_c \\
+		\frac{dR_c}{dt} &= \alpha \frac{F_c}{F_T} (R_T-R_c)-\frac{\beta_R}{K_R}(R_T)(R_c) - \delta R_c - \gamma R_c \\
+		\frac{dF_T}{dt} &= (\frac{\beta_F}{K_F})F_T(K_F-F_T)-\rho F_T  \\
+		\frac{dF_c}{dt} &= \lambda \frac{R_c}{R_T} (F_T-F_c) - \rho F_c 
+	\end{align*}
+\end{equation}
 
 
 The human dynamics follow an SEIR model where the inflow to the infected state depends on the
@@ -133,15 +133,7 @@ population density of the contaminated fleas and an interaction term for the two
 	\frac{dR_b}{dt} &= rI - \mu R_b
 \end{align}
 
-Words, words, words...
 
-
-
-In this model, when looking at every part of the model, there are going to be certain parameters
-that will be fixed, such as the carrying capacity of fleas in relation to the population of the rats.
-Other fixed parameters are the parameters for the birth rate of humans, the intrinsic death rate of
-people, the birth and death rates of rats and fleas, the carrying capacity of the rats, incubation period
-in humans, death rate, and the recovery rate in both humans and rats.
 
 \subsection {Human-Ectoparasite Model}
 Human-parasite transmission, modeled with seven differential equations.
@@ -164,10 +156,9 @@ The ectoparasites are modeled with S - the susceptible population, and I - the i
 \pagebreak
 
 \subsection{Parameters}
-
 \subsubsection{Table of Parameters for existing models}
-
-\begin{table}[]
+Table reconstructed from Dean et. al \cite{Dean1304}
+\begin{table}[H]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|l|}
 \hline
@@ -183,60 +174,88 @@ $\gamma_p^{-1}$ & 2.5 (d) & Average infectious period for pneumonic plague \\
 $\gamma_h^{-1}$ & 10.0 (d) & Average duration of infection for bubonic plague \\
 $g_h$ & 0.4 & Probability of recovery from bubonic plague \\ \hline
 \multicolumn{1}{|l|}{\textbf{Lice}} &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\ \hline
+$r_l$ & 0.11 (per d) & Natural lice growth rate \\
+$K_l$ & 15.0 (per person) & Lice index at carrying capacity \\
+$\beta_l$ & 0.05 & Transmission rate for bubonic plague from body lice to humans \\
+$\gamma_l^{-1}$ & 3.0 (d) & Average infectious period for bubonic plague \\ \hline
 \multicolumn{1}{|l|}{\textbf{Rats}} &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\ \hline
+$\beta_r$ & U(0.001, 1) & Transmission rate for bubonic plague from rat fleas to rats \\
+$\gamma_r^{-1}$ & 5.2 (d) & Average infectious period for bubonic plague \\
+$g_r$ & 0.1 & Probability of recovery from bubonic plague \\ \hline
 \multicolumn{1}{|l|}{\textbf{Fleas}} &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\ \hline
+$r_f$ & 0.0084 (per d) & Natural flea growth rate \\
+$K_f$ & 6.0 & Average number of fleas at carrying capacity \\
+$d_f^{-1}$ & 5.0 (d) & Death rate of fleas \\
+$a$ & 3.0/$S_r(0)$ & Searching efficiency \\ \hline
 \end{tabular}%
 }
 \caption{U indicates the range of a uniformly distributed variable. (d) indicates days}
 \end{table}
 
+
 \subsubsection{Table of Parameters for the Lynch-Oster model}
 
-\begin{table}[]
+\begin{table}[H]
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|l|l|}
 \hline
 \multicolumn{1}{|c|}{\textbf{Parameter}} & \multicolumn{1}{c|}{\textbf{Value}} & \multicolumn{1}{c|}{\textbf{Definition}}                                        \\ \hline
 \multicolumn{1}{|l|}{\textbf{Humans}} &  &  \\
-$\beta$ &  & Intrinsic birth rate \\
-$\sigma$ &  & Chance of becoming infected from flea bite \\
-$\mu$ &  & Intrinsic death rate \\
-$v^{-1}$ & (d) & Incubation period of the disease \\
-$\phi^{-1}$ & (d) & Death rate from bubonic plague \\
-$r^{-1}$ & (d) & Rate of recovery from bubonic plague \\ \hline
+$\beta$ & U(0.001, 1) & Intrinsic birth rate \\
+$\sigma$ & U(0.001, 1) & Chance of becoming infected from flea bite \\
+$\mu$ & U(0.001, 1) & Intrinsic death rate \\
+$v^{-1}$ & U(0.25, 10) (d) & Incubation period of the disease \\
+$r^{-1}$ & U(1, 100) (d) & Rate of recovery from bubonic plague \\
+$\phi^{-1}$ & U(1, 100) (d) & Death rate from bubonic plague \\ \hline
 \multicolumn{1}{|l|}{\textbf{Rats}} &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\ \hline
+$\beta_R$ & U(0.1, 1) & Intrinsic birth rate for rats \\
+$K_R$ & 1.5 * (init. cap) & Carrying capacity for rats \\
+$\delta$ & U(0.001, 1) & Death rate from bubonic plague \\
+$\alpha$ & U(0.001, 1) & Infectivity of the plague from fleas to rats \\
+$\gamma$ & U(0.001, 1) & Recovery rate for rats \\ \hline
 \multicolumn{1}{|l|}{\textbf{Fleas}} &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\
- &  &  \\ \hline
+$\beta_F$ & U(10, 100) & Intrinsic birth rate for fleas \\
+$K_F$ & $6 * K_R$ & Carrying capacity for fleas \\
+$\rho$ & U(0.001, 1) & Death rate from bubonic plague \\
+$\lambda$ & U(0.001, 1) & Infectivity of the plague from rats to fleas \\ \hline
 \end{tabular}%
 }
 \caption{U indicates the range of a uniformly distributed variable. (d) indicates days}
 \end{table}
 
+Here, most of the parameters for this model are uniformly distributed, since little is known about the physical associations of many of them. This provides bounds for possible values based on data (expound) [cite], while letting the specific output be determined by the fitting process.
+
+
+
 \pagebreak
 
 \section{Method: Markov-Chain Monte-Carlo (MCMC)}
 
-The method we will use to compare the effectiveness of these models against real-world data is Markov-Chain Monte-Carlo (MCMC). MCMC is a method of fitting unknown parameters in stochastic models to data which follows these models.
+The method we will use to compare the effectiveness of these models against real-world data is Markov-Chain Monte-Carlo (MCMC). MCMC is a method of fitting unknown parameters in models to data which follows these models.
 
-The steps for MCMC are as such:
+To understand MCMC, we must first define what a Markov Chain is. A definition given by Wolfram is:
 
+"A Markov chain is collection of random variables ${X_t}$ (where the index t runs through 0, 1, ...) having the property that, given the present, the future is conditionally independent of the past." \cite{weisstein}
+
+Effectively, a Markov chain models a sampling of steps in a state machine where the probability to travel from from one state to another is determined by a set of probabilities which not affected by previous states.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{state_machine.jpg}
+	\end{subfigure}
+	\caption{Example diagram of a state machine where state change probabilities are determied by a set of probabilities $\{p_1, p_2, p_3, p_4\}$} 
+\end{figure}
+
+So, assuming one were to create such a state model from data obtained from some system, a markov chain based on the model would produce random variables with the same frequency as the original system data. Additionally, the chain could then be used to simulate or predict future states of the system.
+
+Now, for the second part; the Monte Carlo simulation. This method is used to sample a distribution: specifically when there exists an unknown variable determined by the value of random variables having some known distribution. \cite{holmes} This can be used in simulation to achieve the probability distribution of that unknown variable, and make predictions on its value in various contexts. This kind of simulation is particularly good at long-term prediction as it "project(s) outcomes farther out in time with more accuracy" as inputs increase. \cite{ibm_cloud_2020}
+
+
+Putting these to together we get MCMC. It's a markov chain where the probabilities are calculated from local data using a Monte Carlo method.
+
+** Explain briefly priors and posteriors, equation and bayesian method used
+** Diagram of step process, explanation of burn in and what results are.
 
 
 
@@ -248,40 +267,111 @@ The steps for MCMC are as such:
 
 \section {Comparison}
 
-The known parameters were gathered from historical data, inference of other variables, and the result of some formula. For a full derivation, see the article by Dean et. al. \cite{Dean1304}
-For the unknown parameters, Markov Chain Monte Carlo simulations are run to estimate based on data. We have set up the same process, and will examine the same datasets. For death rates in Barcelona, here are the three models fitted respectively:
+The known parameters for the existing models were gathered from historical data, inference of other variables, and the result of some formula. For a full derivation, see the article by Dean et. al. \cite{Dean1304}
+For the unknown parameters, Markov Chain Monte Carlo simulations are run to estimate based on data. For each model, we have set up the same process, and will examine the same datasets. The three data sets used here are death rates per day in Barcelona (1490), Florence (1400), and Malta (1813) [citation needed]. These were chosen from the original 9 datasets tested in Dean et al. to be representative of comparative performance. Barcelona was chosen, as it performed very well with the Human-Ecto model and was worse than the pneomonic with the existing rat model. Malta and Florence were chosen because all previous models struggled to fit well.
 
-\begin{figure}[h!]
-	\begin{subfigure}{1\textwidth}
-		\includegraphics[width=\linewidth]{Figures/models1.png}
-	\end{subfigure}\hspace{\fill}
-	\caption{The black data points are recorded deaths pre day in the given data set. As is visible, the human-ecto model does get the closest to fitting the given data} 
-\end{figure}
+In the upcoming graphs, the black data points are recorded deaths pre day in the given data set. The red line represents the model output, and the pink outline represents the model's 95\% C.I. 
 
-Here for example for above
-\begin{figure}[h!]
+\newpage
+For death rates in Barcelona in 1490:
+
+\begin{figure}[H]
 	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/bubonic750.jpg}
+	\includegraphics[width=\linewidth]{pneum_barcelona.png}
+	\caption{Pneumonic Model}
 	\end{subfigure}\hspace{\fill}
 	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/bubonicr.jpg}
+	\includegraphics[width=\linewidth]{rats1_barcelona.png}
+	\caption{Keeling-Gilligan Rat Model}
 	\end{subfigure}
 	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/bubonicrat.jpg}
+	\includegraphics[width=\linewidth]{hum_ecto_barcelona.png}
+	\caption{Human-Ecto Model}
 	\end{subfigure}\hspace{\fill}
 	\begin{subfigure}{0.48\textwidth}
-	\includegraphics[width=\linewidth]{Figures/Bubonicrf.jpg}
+	\includegraphics[width=\linewidth]{rats2_lynch_oster_barcelona.png}
+	\caption{Lynch-Oster Rat Model}
 	\end{subfigure}
-	\caption{Human, rat, and flea populations under the bubonic model. The parameters are $\alpha=0.25, \delta=1/300, \gamma=0.1, \lambda=0.2, \rho=1/40, \sigma=1.5*10^{-3}, \nu=1/6, \phi=1/6, r=1/10.$}
+	\caption{Barcelona - 1490. Here, the Human-Ecto model performs the best, followed closely by the Lynch-Oster Model, and the the other two are a bit behind}
 \end{figure}
+
+\newpage
+For death rates in Malta in 1813:
+
+\begin{figure}[H]
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{pneum_malta.png}
+	\caption{Pneumonic Model}
+	\end{subfigure}\hspace{\fill}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{rats1_malta.png}
+	\caption{Keeling-Gilligan Rat Model}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{hum_ecto_malta.png}
+	\caption{Human-Ecto Model}
+	\end{subfigure}\hspace{\fill}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{rats2_lynch_oster_malta.png}
+	\caption{Lynch-Oster Rat Model}
+	\end{subfigure}
+	\caption{Malta - 1813. Here, the Human-Ecto model performs the best, followed by the Lynch-Oster model, then the Pneumonic model, and the Keeling-Gilligan is far behind}
+\end{figure}
+
+\newpage
+For death rates in Florence in 1400:
+
+\begin{figure}[H]
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{pneum_florence.png}
+	\caption{Pneumonic Model}
+	\end{subfigure}\hspace{\fill}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{rats1_florence.png}
+	\caption{Keeling-Gilligan Rat Model}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{hum_ecto_florence.png}
+	\caption{Human-Ecto Model}
+	\end{subfigure}\hspace{\fill}
+	\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=\linewidth]{rats2_lynch_oster_florence.png}
+	\caption{Lynch-Oster Rat Model}
+	\end{subfigure}
+	\caption{Florence - 1400. Here, the Lynch-Oster model performs best, followed by the Human-Ecto model, and the other two are quite behind}
+\end{figure}
+
+The fitting effectiveness was measured with BIC. Here are the corresponding values for each dataset:
+
+\begin{table}[H]
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Dataset} & \textbf{Model}       & \textbf{BIC} \\ \hline
+Barcelona        & Human-Ecto           &              \\ \cline{2-3} 
+                 & Keeling-Gilligan Rat & 3392.17      \\ \cline{2-3} 
+                 & Lynch-Oster Rat      & 2002.4       \\ \cline{2-3} 
+                 & Pneumonic            & 2410.6       \\ \hline
+Malta            & Human-Ecto           & 1945         \\ \cline{2-3} 
+                 & Keeling-Gilligan Rat & 8273.8       \\ \cline{2-3} 
+                 & Lynch-Oster Rat      & 2491.03      \\ \cline{2-3} 
+                 & Pneumonic            & 3805.98      \\ \hline
+Florence         & Human-Ecto           & 6105.4       \\ \cline{2-3} 
+                 & Keeling-Gilligan Rat & 15547.45     \\ \cline{2-3} 
+                 & Lynch-Oster Rat      & 2374.95      \\ \cline{2-3} 
+                 & Pneumonic            & 12021.5      \\ \hline
+\end{tabular}
+\end{table}
+
+
+Overall, the Lynch-Oster model performed quite well. In each case, it was a better fit than the pneumonic and Keelin-Gilligan rat model. It performed about on par with the Human-Ecto model in Barcelona, and outperformed it in Florence.
 
 \newpage
 
 \section {Discussion}
 
-Words... 
+While there is no clear winner when looking at the Ecto-Parasite and the Lynch-Oster models for plague spread, it's clear the new rat model brings solid evidence that the rat-based plague interpretation is certainly plausible. This calls for additional testing against new data.
 
-
+As part of this, there is also more work that could be done in the fitting process. Currently, each model is run independently in Jpyter notebooks with most of the fitting process copied. This is adapted from the methods used in Dean et al. It would be beneficial for future model fitting to streamline the process to allow easily swapping out models, data, and graphing styles. This would allow researchers to quickly test the efficacy of developing new models against existing ones, and come up with better comparisons.
 
 
 \pagebreak
