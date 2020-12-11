@@ -67,64 +67,71 @@ This paper's seminal work by Dean et.\ al. \cite{Dean1304} set out to compare 3 
 transmission: 2 for bubonic and 1 for pneumonic plague. The rat-flea model used was obtained from two papers by Keeling and Gilligan \cite{keeling_gilligan_zoonosis} \cite{keeling2000}, and going forward will be referred to as the Keeling-Gilligan model. While in the Dean work the Keeling-Gilligan rat-flea model did not perform as well as the Human-ecto model, a new rat-flea model has recently been proposed. This model developed by Oster and Lynch [citation needed], hereafter known as the Lynch-Oster model, takes a different model structure to that of Keeling and Gilligan. These models, taken from their respective papers, are as such:
 
 \subsection {Pneumonic Model}
-Direct human-to-human transmission, modeled with three differential equations.
+Direct human-to-human transmission, modeled with three differential equations. Since so few recovered from the pneumonic plague, the population follows a simple SID model
+(Susceptible, Infected, Dead.):
 
-\begin{equation}
-	\begin{align*}
-		\frac{dS_h}{dt} &= - \beta_p \frac{S_h I_h}{N_h} \\
-		\frac{dI_h}{dt} &= \beta_p \frac{S_h I_h}{N_h} - \gamma_p I_h \\
-		\frac{dD_h}{dt} &= \gamma_p I_h
-	\end{align*}
-\end{equation}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{sid-graph.png}
+	\caption{SIR Model Diagram}
+\end{figure}
 
-This is a SID model for human population. Since so few recovered from the pneumonic plague, it does not warrant the complexity of another equation.
+
+\begin{align}
+	\frac{dS_h}{dt} &= - \beta_p \frac{S_h I_h}{N_h} \\
+	\frac{dI_h}{dt} &= \beta_p \frac{S_h I_h}{N_h} - \gamma_p I_h \\
+	\frac{dD_h}{dt} &= \gamma_p I_h
+\end{align}
+
 
 \subsection {Keeling-Gilligan Rat Model}
-This model of rat-flea-human transmission is modeled with ten differential equations.
+This model of rat-flea-human transmission is modeled with ten differential equations. Given that fleas live on the rats, they are modeled as an average number of fleas per rat H, and the number of infections fleas not on rats F:
 
-\begin{equation}
-	\begin{align*}
-		\frac{dS_r}{dt} &= - \beta_r \frac{S_r F}{N_r} \left[ 1 - e^{-aN_r} \right] \\
-		\frac{dI_r}{dt} &= \beta_r \frac{S_r F}{N_r} \left[ 1 - e^{-aN_r} \right] - \gamma_r I_r \\
-		\frac{dR_r}{dt} &= g_r \gamma_r I_r \\
-		\frac{dD_r}{dt} &= (1 - g_r) \gamma_r I_r \\
-		\frac{dH}{dt} &= r_f H \left( 1 - \frac{H}{K_f} \right) \\
-		\frac{dF}{dt} &= (1 - g_r) \gamma_r I_r H - d_f F \\
-		\frac{dS_h}{dt} &= - \beta_h \frac{S_h F}{N_h} \left[ 1 - e^{-aN_r} \right] \\
-		\frac{dI_h}{dt} &= \beta_h \frac{S_h F}{N_h} \left[ 1 - e^{-aN_r} \right] - \gamma_h I_h \\
-		\frac{dR_h}{dt} &= g_h \gamma_h I_h \\
-		\frac{dD_h}{dt} &= (1 - g_h) \gamma_h I_h
-	\end{align*}
-\end{equation}
+\begin{align}
+	\frac{dH}{dt} &= r_f H \left( 1 - \frac{H}{K_f} \right) \\
+	\frac{dF}{dt} &= (1 - g_r) \gamma_r I_r H - d_f F
+\end{align}
 
-These equations follow a SIRD model for rats and humans:
+The Rat and Human populations follow an SIRD model (Susceptible, Infected, Recovered, Dead):
 
-S - Susceptible,
-I - Infected,
-R - recovered,
-D - dead.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.65\linewidth]{sird-graph.png}
+	\caption{SIRD Model Diagram}
+\end{figure}
 
-In this case, the total of population i is $T_i = S_i + I_i + R_i$.
+\begin{align}
+	\frac{dS_j}{dt} &= - \beta_r \frac{S_j F}{N_j} \left[ 1 - e^{-aN_r} \right] \\
+	\frac{dI_j}{dt} &= \beta_r \frac{S_j F}{N_j} \left[ 1 - e^{-aN_r} \right] - \gamma_j I_j \\
+	\frac{dR_r}{dt} &= g_j \gamma_j I_j \\
+	\frac{dD_r}{dt} &= (1 - g_j) \gamma_j I_j
+\end{align}
 
-Given that fleas live on the rats, they are modeled as an average number of fleas per rat H, and the number of infections fleas not on rats F.
+Here, j = r, h for rats and humans respectively
+
+In this case, the total of population j is $T_j = S_j + I_j + R_j$.
 
 \subsection{Lynch-Oster Rat Model}
 
-These equations govern the dynamics of the rats and fleas in 3 models each:
+These equations govern the dynamics of the rats and fleas with logistic models:
 
-\begin{equation}
-	\begin{align*}
-		\frac{dR_T}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R_T)-\delta R_c \\
-		\frac{dR}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R)-\alpha \frac{F_c}{F_T}R+\gamma  R_c \\
-		\frac{dR_c}{dt} &= \alpha \frac{F_c}{F_T} (R_T-R_c)-\frac{\beta_R}{K_R}(R_T)(R_c) - \delta R_c - \gamma R_c \\
-		\frac{dF_T}{dt} &= (\frac{\beta_F}{K_F})F_T(K_F-F_T)-\rho F_T  \\
-		\frac{dF_c}{dt} &= \lambda \frac{R_c}{R_T} (F_T-F_c) - \rho F_c 
-	\end{align*}
-\end{equation}
+\begin{align}
+	\frac{dR_T}{dt} &= (\frac{\beta_R}{K_R})R_T(K_R-R_T)-\delta R_c \\
+	\frac{dR_c}{dt} &= \alpha \frac{F_c}{F_T} (R_T-R_c)-\frac{\beta_R}{K_R}(R_T)(R_c) - \delta R_c - \gamma R_c \\
+	\frac{dF_T}{dt} &= (\frac{\beta_F}{K_F})F_T(K_F-F_T)-\rho F_T  \\
+	\frac{dF_c}{dt} &= \lambda \frac{R_c}{R_T} (F_T-F_c) - \rho F_c 
+\end{align}
 
+Here $R_t$ indicates the total population of rats and $R_c$ indicates the number of contaminated rats. The equations for the fleas follow similarly.
 
-The human dynamics follow an SEIR model where the inflow to the infected state depends on the
+The human dynamics follow an SEIR model (Susceptible, Exposed, Infected, Recovered) where the inflow to the infected state depends on the
 population density of the contaminated fleas and an interaction term for the two populations.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{seir-graph.png}
+	\caption{SEIR Model Diagram}
+\end{figure}
 
 \begin{align}
 	\frac{dS}{dt} &= \beta (S+R_b) - \sigma S \frac{F_c}{F_T} - \mu S \\
@@ -136,22 +143,32 @@ population density of the contaminated fleas and an interaction term for the two
 
 
 \subsection {Human-Ectoparasite Model}
-Human-parasite transmission, modeled with seven differential equations.
+Human-parasite transmission is modeled with seven differential equations.
 
-\begin{equation}
-	\begin{align*}
-		\frac{dS_h}{dt} &= -\beta_l \frac{S_h I_l}{N_h} \\
-		\frac{dI_{low}}{dt} &= \beta_l \frac{S_h I_l}{N_h} - \sigma_b I_{low} \\
-		\frac{dI_{high}}{dt} &= (1-g_h) \sigma_b I_{low} - \gamma_b I_{high} \\
-		\frac{dR_h}{dt} &= g_h \sigma_b I_{low} \\
-		\frac{dD_h}{dt} &= \gamma_b I_{high} \\
-		\frac{dS_l}{dt} &= r_l S_l \left( 1 - \frac{N_l}{K_l} \right) - \left[ \left( \beta_{low} I_{low} + \beta_{high} I_{high} \right) \frac{S_l}{N_h} \right] \\
-		\frac{dI_l}{dt} &= \left[ \left( \beta_{low} I_{low} + \beta_{high} I_{high} \right) \frac{S_l}{N_h} \right] - \gamma_l I_l
-	\end{align*}
-\end{equation}
+Here, the parasite modeled is lice, which follows an SI model (Susceptible, Infected):
 
-Here we have a SIIRD model for human population, to include the difference between high and low infectiousness of bacteria.
-The ectoparasites are modeled with S - the susceptible population, and I - the infected population.
+\begin{align}
+	\frac{dS_l}{dt} &= r_l S_l \left( 1 - \frac{N_l}{K_l} \right) - \left[ \left( \beta_{low} I_{low} + \beta_{high} I_{high} \right) \frac{S_l}{N_h} \right] \\
+	\frac{dI_l}{dt} &= \left[ \left( \beta_{low} I_{low} + \beta_{high} I_{high} \right) \frac{S_l}{N_h} \right] - \gamma_l I_l
+\end{align}
+
+The human population follows an $S I_l I_h R D$ model (Susceptible, Infected (low), Infected (high), Recovered, Dead):
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\linewidth]{siird-graph.png}
+	\caption{SIIRD Model Diagram}
+\end{figure}
+
+\begin{align}
+	\frac{dS_h}{dt} &= -\beta_l \frac{S_h I_l}{N_h} \\
+	\frac{dI_{low}}{dt} &= \beta_l \frac{S_h I_l}{N_h} - \sigma_b I_{low} \\
+	\frac{dI_{high}}{dt} &= (1-g_h) \sigma_b I_{low} - \gamma_b I_{high} \\
+	\frac{dR_h}{dt} &= g_h \sigma_b I_{low} \\
+	\frac{dD_h}{dt} &= \gamma_b I_{high} \\
+\end{align}
+
+This model includes terms which differentiate between high and low infectiousness of bacteria.
 
 \pagebreak
 
@@ -229,10 +246,11 @@ Here, most of the parameters for this model are uniformly distributed, since lit
 
 \pagebreak
 
-\section{Method: Markov-Chain Monte-Carlo (MCMC)}
+\section{Method: Markov-Chain Monte-Carlo}
 
 The method we will use to compare the effectiveness of these models against real-world data is Markov-Chain Monte-Carlo (MCMC). MCMC is a method of fitting unknown parameters in models to data which follows these models.
 
+\subsubsection{Markov Chains}
 To understand MCMC, we must first define what a Markov Chain is. A definition given by Wolfram is:
 
 "A Markov chain is collection of random variables ${X_t}$ (where the index t runs through 0, 1, ...) having the property that, given the present, the future is conditionally independent of the past." \cite{weisstein}
@@ -249,8 +267,10 @@ Effectively, a Markov chain models a sampling of steps in a state machine where 
 
 So, assuming one were to create such a state model from data obtained from some system, a markov chain based on the model would produce random variables with the same frequency as the original system data. Additionally, the chain could then be used to simulate or predict future states of the system.
 
+\subsubsection{Mone Carlo methods}
 Now, for the second part; the Monte Carlo simulation. This method is used to sample a distribution: specifically when there exists an unknown variable determined by the value of random variables having some known distribution. \cite{holmes} This can be used in simulation to achieve the probability distribution of that unknown variable, and make predictions on its value in various contexts. This kind of simulation is particularly good at long-term prediction as it "project(s) outcomes farther out in time with more accuracy" as inputs increase. \cite{ibm_cloud_2020}
 
+\subsubsection{MCMC}
 
 Putting these to together we get MCMC. It's a markov chain where the probabilities are calculated from local data using a Monte Carlo method.
 
@@ -261,41 +281,55 @@ Putting these to together we get MCMC. It's a markov chain where the probabiliti
 
 \newpage
 
-
-
-\newpage
-
 \section {Comparison}
 
-The known parameters for the existing models were gathered from historical data, inference of other variables, and the result of some formula. For a full derivation, see the article by Dean et. al. \cite{Dean1304}
-For the unknown parameters, Markov Chain Monte Carlo simulations are run to estimate based on data. For each model, we have set up the same process, and will examine the same datasets. The three data sets used here are death rates per day in Barcelona (1490), Florence (1400), and Malta (1813) [citation needed]. These were chosen from the original 9 datasets tested in Dean et al. to be representative of comparative performance. Barcelona was chosen, as it performed very well with the Human-Ecto model and was worse than the pneomonic with the existing rat model. Malta and Florence were chosen because all previous models struggled to fit well.
+\subsubsection{Setup}
 
-In the upcoming graphs, the black data points are recorded deaths pre day in the given data set. The red line represents the model output, and the pink outline represents the model's 95\% C.I. 
+The known parameters for the existing models were gathered from historical data, inference of other variables, and the result of some formula. For a full derivation, see the article by Dean et. al. \cite{Dean1304}
+For the unknown parameters, MCMC simulations are run to estimate based on data. For each model, we have set up the same process, and will examine the same datasets. The three data sets used here are death rates per day in Barcelona (1490), Florence (1400), and Malta (1813) [citation needed]. These were chosen from the original 9 datasets tested in Dean et al. to be representative of comparative performance. Barcelona was chosen, as it performed very well with the Human-Ecto model and was worse than the pneomonic with the existing rat model. Malta and Florence were chosen because all previous models struggled to fit well.
+
+Each MCMC simulation took 3 samplings of 180,000 iterations with 80,000 burn-in steps and a thinning of 10. This follows the same process as was conducted by Dean et al.
+
+In the following graphs, the black data points are recorded deaths pre day in the given data set. The red line represents the model output, and the pink outline represents the model's 95\% C.I. 
 
 \newpage
+
+\subsubsection{Barcelona}
 For death rates in Barcelona in 1490:
 
+\begin{center}
+\textbf{Barcelona - 1490}
+\end{center}
 \begin{figure}[H]
 	\begin{subfigure}{0.48\textwidth}
+	\centering
+	Pneumonic Model
 	\includegraphics[width=\linewidth]{pneum_barcelona.png}
-	\caption{Pneumonic Model}
+%	\caption{Pneumonic Model}
 	\end{subfigure}\hspace{\fill}
 	\begin{subfigure}{0.48\textwidth}
+	\centering
+	Keeling-Gilligan Model
 	\includegraphics[width=\linewidth]{rats1_barcelona.png}
-	\caption{Keeling-Gilligan Rat Model}
+%	\caption{Keeling-Gilligan Rat Model}
 	\end{subfigure}
 	\begin{subfigure}{0.48\textwidth}
+	\centering
+	Human-Ecto Model
 	\includegraphics[width=\linewidth]{hum_ecto_barcelona.png}
-	\caption{Human-Ecto Model}
+%	\caption{Human-Ecto Model}
 	\end{subfigure}\hspace{\fill}
 	\begin{subfigure}{0.48\textwidth}
+	\centering
+	Lynch-Oster Model
 	\includegraphics[width=\linewidth]{rats2_lynch_oster_barcelona.png}
-	\caption{Lynch-Oster Rat Model}
+%	\caption{Lynch-Oster Rat Model}
 	\end{subfigure}
 	\caption{Barcelona - 1490. Here, the Human-Ecto model performs the best, followed closely by the Lynch-Oster Model, and the the other two are a bit behind}
 \end{figure}
 
 \newpage
+\subsubsection{Malta}
 For death rates in Malta in 1813:
 
 \begin{figure}[H]
@@ -319,6 +353,8 @@ For death rates in Malta in 1813:
 \end{figure}
 
 \newpage
+
+\subsubsection{Florence}
 For death rates in Florence in 1400:
 
 \begin{figure}[H]
@@ -341,16 +377,21 @@ For death rates in Florence in 1400:
 	\caption{Florence - 1400. Here, the Lynch-Oster model performs best, followed by the Human-Ecto model, and the other two are quite behind}
 \end{figure}
 
-The fitting effectiveness was measured with BIC. Here are the corresponding values for each dataset:
+\newpage
+
+\subsubsection{Summary}
+
+The effectiveness of each model was measured using the Bayesian Information criterion (BIC). Here are the corresponding values for each dataset:
 
 \begin{table}[H]
+\begin{center}
 \begin{tabular}{|l|l|l|}
 \hline
 \textbf{Dataset} & \textbf{Model}       & \textbf{BIC} \\ \hline
-Barcelona        & Human-Ecto           &              \\ \cline{2-3} 
-                 & Keeling-Gilligan Rat & 3392.17      \\ \cline{2-3} 
-                 & Lynch-Oster Rat      & 2002.4       \\ \cline{2-3} 
-                 & Pneumonic            & 2410.6       \\ \hline
+Barcelona        & Human-Ecto           & 1945      \\ \cline{2-3}
+                 & Lynch-Oster Rat      & 2002      \\ \cline{2-3}  
+                 & Pneumonic            & 2411      \\ \cline{2-3} 
+                 & Keeling-Gilligan Rat & 3392       \\ \hline
 Malta            & Human-Ecto           & 1945         \\ \cline{2-3} 
                  & Keeling-Gilligan Rat & 8273.8       \\ \cline{2-3} 
                  & Lynch-Oster Rat      & 2491.03      \\ \cline{2-3} 
@@ -360,7 +401,32 @@ Florence         & Human-Ecto           & 6105.4       \\ \cline{2-3}
                  & Lynch-Oster Rat      & 2374.95      \\ \cline{2-3} 
                  & Pneumonic            & 12021.5      \\ \hline
 \end{tabular}
+\end{center}
+\caption{BIC values per data set. A lower value indicates a better fit.}
 \end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Dataset} & \textbf{Model}       & \textbf{RMSE} \\ \hline
+Barcelona        & Human-Ecto           & 4.9      \\ \cline{2-3} 
+                 & Keeling-Gilligan Rat & 10.6      \\ \cline{2-3} 
+                 & Lynch-Oster Rat      & 2002.4       \\ \cline{2-3} 
+                 & Pneumonic            & 8.1       \\ \hline
+Malta            & Human-Ecto           & 7.4         \\ \cline{2-3} 
+                 & Keeling-Gilligan Rat & 17.6       \\ \cline{2-3} 
+                 & Lynch-Oster Rat      & 7.8      \\ \cline{2-3} 
+                 & Pneumonic            & 10.0      \\ \hline
+Florence         & Human-Ecto           & 15.6       \\ \cline{2-3} 
+                 & Keeling-Gilligan Rat & 32.7     \\ \cline{2-3} 
+                 & Lynch-Oster Rat      & 16.9      \\ \cline{2-3} 
+                 & Pneumonic            & 31.3      \\ \hline
+\end{tabular}
+\end{center}
+\caption{RMSE values per data set. A lower value indicates a better fit.}
+\end{table}
+
 
 
 Overall, the Lynch-Oster model performed quite well. In each case, it was a better fit than the pneumonic and Keelin-Gilligan rat model. It performed about on par with the Human-Ecto model in Barcelona, and outperformed it in Florence.
